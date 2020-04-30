@@ -1,5 +1,6 @@
 module.exports = {
-  target: 'serverless',
+  //target: 'serverless',
+  exportTrailingSlash: true,
   webpack: config => {
     // Fixes npm packages that depend on `fs` module
     config.node = {
@@ -7,5 +8,10 @@ module.exports = {
     }
 
     return config
+  // },
+  // exportPathMap: function() {
+  //   return {
+  //     '/': { page: '/' }
+  //   }
   }
 }

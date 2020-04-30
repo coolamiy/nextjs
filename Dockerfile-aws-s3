@@ -1,0 +1,34 @@
+FROM node:10.16.0 as build
+ENV AWS_ACCESS_KEY_ID="AKIAZU4MFTGLOMNW2X6T"
+ENV AWS_SECRET_ACCESS_KEY="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"
+ENV GITHASH="122121231"
+#it will made awscli we generated, can be access in node10
+ENV PATH=/root/.local/bin:$PATH
+RUN apt-get update && apt-get install -y python3-pip && pip3 install awscli --upgrade
+WORKDIR /app
+ENV PATH /app/node_modules/.bin:$PATH
+COPY ./package.json /app
+# To handle 'not get uid/gid'
+RUN npm config set unsafe-perm true
+RUN npm install --silent
+RUN npm install react-scripts@3.0.1 -g --silent
+COPY . /app
+RUN npm run build
+RUN npm run export
+#it can make us running in multiple environment
+RUN mv out/_next .
+RUN mv out _out
+RUN mkdir -p out/builds/Our-BUild-Hash
+RUN mv _out/* out/builds/Our-BUild-Hash
+RUN rm -rf _out
+RUN mv _next out/
+RUN aws s3 cp ./out/_next s3://myappamit/test/_next --cache-control public --acl public-read --recursive
+RUN aws s3 cp ./static s3://myappamit/test/static --cache-control public --acl public-read --recursive
+RUN aws s3 cp ./out/builds s3://myappamit/test/builds --acl public-read --recursive
+RUN aws s3 sync s3://myappamit/test/builds/$GITHASH s3://myappamit /test/current --delete --acl public-read
+RUN aws s3 sync
+FROM node:10.16.0
+COPY --from=0 /app /app
+WORKDIR /app
+EXPOSE 3000
+CMD npm run start

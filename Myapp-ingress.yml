@@ -1,0 +1,18 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    ingress.kubernetes.io/whitelist-source-range: 49.36.X.X/32
+  name: myapp
+  labels:
+    app: myapp
+spec:
+ rules:
+  - host:myapp.dev.com
+    http:
+      paths:
+        - path: /
+          backend:
+            serviceName: myapp
+            servicePort: http

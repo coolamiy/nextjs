@@ -1,0 +1,10 @@
+resourcePolicy:
+  - Effect: Allow
+    Principal: "*"
+    Action: execute-api:Invoke
+    Resource:
+      - execute-api:/*/*/*
+    Condition:
+      IpAddress:
+        aws:SourceIp:
+          - "109.128.157.162"
