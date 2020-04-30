@@ -66,6 +66,7 @@ if [[ $? == 0 ]]; then
 
 else
     echo " Failed to deploy application to aws.."
+    exit 1
 fi
 
 serverless remove --stage $3
