@@ -1,6 +1,6 @@
 FROM node:10.16.0 as build
-ENV AWS_ACCESS_KEY_ID="AKIAZU4MFTGLOMNW2X6T"
-ENV AWS_SECRET_ACCESS_KEY="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"
+ENV AWS_ACCESS_KEY_ID=""
+ENV AWS_SECRET_ACCESS_KEY=""
 ENV GITHASH="122121231"
 #it will made awscli we generated, can be access in node10
 ENV PATH=/root/.local/bin:$PATH
